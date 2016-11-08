@@ -7,17 +7,17 @@ exports.seed = function(knex, Promise) {
   )
   .then(function () {
     return Promise.join(
-      knex('movies').insert({title: 'Shawshank Redemption', release_year: 1994}).returning('id'),
-      knex('movies').insert({title: 'Bourne Identity', release_year: 2002}).returning('id'),
-      knex('movies').insert({title: 'Back to the Future', release_year: 1985}).returning('id'),
-      knex('movies').insert({title: 'Good Will Hunting', release_year: 1997}).returning('id')
+      knex('movies').insert({title: 'Shawshank Redemption', release_year: 1994, id: 1}).returning('id'),
+      knex('movies').insert({title: 'Bourne Identity', release_year: 2002, id: 2}).returning('id'),
+      knex('movies').insert({title: 'Back to the Future', release_year: 1985, id: 3}).returning('id'),
+      knex('movies').insert({title: 'Good Will Hunting', release_year: 1997, id: 4}).returning('id')
     )
   }).then(function (movies) {
     return Promise.join(
-      knex('actors').insert({name: 'Matt Damon', dob: '1970-10-08'}).returning('id'),
-      knex('actors').insert({name: 'Tim Robbins', dob: '1958-10-16'}).returning('id'),
-      knex('actors').insert({name: 'Morgan Freeman', dob: '1937-06-01'}).returning('id'),
-      knex('actors').insert({name: 'Jonah Hill', dob: '1983-12-20'}).returning('id')
+      knex('actors').insert({name: 'Matt Damon', dob: '1970-10-08', id: 1}).returning('id'),
+      knex('actors').insert({name: 'Tim Robbins', dob: '1958-10-16', id: 2}).returning('id'),
+      knex('actors').insert({name: 'Morgan Freeman', dob: '1937-06-01', id: 3}).returning('id'),
+      knex('actors').insert({name: 'Jonah Hill', dob: '1983-12-20', id: 4}).returning('id')
     ).then(function (actors) {
       return {
         movies: {
@@ -39,22 +39,26 @@ exports.seed = function(knex, Promise) {
       knex('appearances').insert({
         actor_id: data.actors.matt,
         movie_id: data.movies.bourneIndentity,
-        character: 'Jason Bourne'
+        character: 'Jason Bourne',
+        id: 1
       }),
       knex('appearances').insert({
         actor_id: data.actors.matt,
         movie_id: data.movies.goodWillHunting,
-        character: 'Will Hunting'
+        character: 'Will Hunting',
+        id: 2
       }),
       knex('appearances').insert({
         actor_id: data.actors.morgan,
         movie_id: data.movies.shawshankRedemption,
-        character: 'Red'
+        character: 'Red',
+        id: 3
       }),
       knex('appearances').insert({
         actor_id: data.actors.tim,
         movie_id: data.movies.shawshankRedemption,
-        character: 'Andy Dufrane'
+        character: 'Andy Dufresne',
+        id: 4
       })
     )
   })

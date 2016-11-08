@@ -1,4 +1,15 @@
+
+
 module.exports = {
+
+  test: {
+    client: 'postgresql',
+    connection: 'postgres://localhost/movie-actors-test',
+    pool: {
+      min: 1,
+      max: 1
+    }
+  },
 
   development: {
     client: 'postgresql',

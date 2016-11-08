@@ -9,6 +9,8 @@ var index = require('./routes/index');
 var movies = require('./routes/movies');
 var actors = require('./routes/actors');
 var appearances = require('./routes/appearances');
+const PORT = 8080;
+
 
 var app = express();
 
@@ -29,6 +31,7 @@ app.use('/api/v1/appearances', appearances);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log("We are in the error");
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -61,6 +64,10 @@ app.use(function(err, req, res, next) {
     }
   });
 });
+
+app.listen(PORT, function () {
+  console.log("Listening on port", PORT, "and for porject 'Supertest'");
+})
 
 
 module.exports = app;
