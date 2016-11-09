@@ -11,7 +11,7 @@ var index = require('./routes/index');
 var movies = require('./routes/movies');
 var actors = require('./routes/actors');
 var appearances = require('./routes/appearances');
-const PORT = 8080;
+// const PORT = 8080;
 
 var app = express();
 
@@ -67,9 +67,9 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(PORT, function () {
-  console.log(`Server is fully operational on ${PORT} for 'Testing with Supertest'`);
-});
+// app.listen(PORT, function () {
+//   console.log(`Server is fully operational on ${PORT} for 'Testing with Supertest'`);
+// });
 
 
 module.exports = app;
