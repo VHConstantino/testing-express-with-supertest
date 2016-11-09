@@ -1,12 +1,12 @@
-"use strict"
+"use strict";
 
+var app = require('../app');
+var knex = require("../db/knex");
 var expect = require('chai').expect;
-var app = require('../app')
 var request = require('supertest')(app);
-var knex = require("../db/knex")
 
 beforeEach(function() {
-  return knex.seed.run(knex.config)
+  return knex.seed.run(knex.config);
 });
 
 // afterEach(function(done) {
@@ -21,7 +21,6 @@ beforeEach(function() {
       request.get('/api/v1/movies')
       .expect(200)
       .end(function (err, res) {
-        // console.log(res);
         if (err) return done(err);
         expect(res.body.length).to.eq(4);
         done();
@@ -29,14 +28,13 @@ beforeEach(function() {
     });
   });
 
-  describe("Join of different tables", function() {
-    it("Should return a joined table from appearances, movies and actors with title, release_year, name, dob and character", function (done) {
+  describe("Display information from joined tables", function() {
+    it("Should return an object with title, release_year, name, dob and character (from a joined table from appearances, movies and actors)", function (done) {
       request
       .get('/api/v1/appearances')
       .set('Accept', 'application/json')
       .expect(200)
       .end(function (err, res) {
-        // console.log(res.body[0]);
         expect(res.body).to.eql([{
           "title": "Bourne Identity",
           "release_year": 2002,
@@ -70,59 +68,81 @@ beforeEach(function() {
     });
   });
 
-  describe("New movie creation",function () {
-    it("should return a response including an id, a title and a release_year",function (done) {
-      let movieTest = {
-        title: "The Godfather",
-        release_year: 1972};
-        request
-        .post("/api/v1/movies")
-        .send(movieTest)
-        .expect(200)
-        .end(function (err, res) {
-          if (err) {
-            return done(err);
-          }
-          expect(res.body.results[0].title).to.eql("The Godfather");
-          expect(res.body.results[0].release_year).to.eql(1972);
-          done();
+  // describe("Create record of a new movie",function () {
+  //   it("Should return a response that includes id, title, and release_year of the new movie",function (done) {
+  //     let movieTest = {
+  //       title: "The Godfather",
+  //       release_year: 1972};
+  //       request
+  //       .post("/api/v1/movies")
+  //       .send(movieTest)
+  //       .expect(200)
+  //       .end(function (err, res) {
+  //         if (err) {
+  //           return done(err);
+  //         }
+  //         expect(res.body.results[0].title).to.eql("The Godfather");
+  //         expect(res.body.results[0].release_year).to.eql(1972);
+  //         done();
+  //       });
+  //     });
+  //   });
+
+  describe("Add a column to 'movies' called 'rating'", function () {
+    it("Should return a response that includes id, title, release_year, and rating of the new movie", function (done) {
+        let movieTest = {
+          title: "The Godfather",
+          release_year: 1972,
+          rating: 10};
+          request
+          .post("/api/v1/movies")
+          .send(movieTest)
+          .expect(200)
+          .end(function (err, res) {
+            if (err) {
+              return done(err);
+            }
+            expect(res.body.results[0].title).to.eql("The Godfather");
+            expect(res.body.results[0].release_year).to.eql(1972);
+            expect(res.body.results[0].rating).to.eql(10);
+            done();
+          });
         });
       });
-    });
 
-describe("Update movies", function () {
-  it("Should return a response with the id, title and release_year of the updated movie", function(done) {
-    let movieTest = {
-      title: "The Godmother",
-      release_year: 1932
-    };
-    request
-    .patch("/api/v1/movies/1")
-    .send(movieTest)
-    .expect(200)
-    .end(function (err, res) {
-      if (err) {
-        return done(err);
-      }
-      expect(res.body.results[0].title).to.eql("The Godmother");
-      expect(res.body.results[0].release_year).to.eql(1932);
-      done();
+  describe("Update an existing movie record", function () {
+    it("Should return a response that includes id, title, and release_year of the updated movie", function(done) {
+      let movieTest = {
+        title: "Singin' in the Rain",
+        release_year: 1952
+      };
+      request
+      .patch("/api/v1/movies/1")
+      .send(movieTest)
+      .expect(200)
+      .end(function (err, res) {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.results[0].title).to.eql("Singin' in the Rain");
+        expect(res.body.results[0].release_year).to.eql(1952);
+        done();
+      });
     });
   });
-});
 
-describe("Delete movie", function () {
-  it("Should delete the selected movie from the database", function (done) {
-    request
-    .delete("/api/v1/movies/1")
-    .expect(200)
-    .end(function (err, res) {
-      if (err) {
-        return done(err);
-      }
-      expect(res.body.results[0].title).to.eql("Shawshank Redemption");
-      expect(res.body.results[0].release_year).to.eql(1994);
-      done();
+  describe("Delete an existing movie record", function () {
+    it("Should delete the selected movie record from the database", function (done) {
+      request
+      .delete("/api/v1/movies/1")
+      .expect(200)
+      .end(function (err, res) {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.results[0].title).to.eql("Shawshank Redemption");
+        expect(res.body.results[0].release_year).to.eql(1994);
+        done();
+      });
     });
   });
-});

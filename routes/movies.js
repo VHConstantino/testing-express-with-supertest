@@ -1,6 +1,9 @@
+"use strict";
+
 var express = require('express');
-var router = express.Router();
 var knex = require('../db/knex');
+var router = express.Router();
+
 
 router.get('/', function(req, res, next) {
   knex('movies').then(function (movies) {
@@ -10,16 +13,34 @@ router.get('/', function(req, res, next) {
   });
 });
 
-//NEED TO WORK ON THIS
+//route before adding 'rating' column
+// router.post('/', function (req, res, next) {
+//   knex('movies')
+//   .insert({
+//     title: req.body.title,
+//     release_year: req.body.release_year}
+//   )
+//   .returning(['id', 'title', 'release_year'])
+//   .then(function (movies) {
+//     res.json({
+//       statusCode: 200,
+//       results: movies
+//     });
+//   }).catch(function(err) {
+//     next(new Error(err));
+//   });
+// });
+
+// route after adding 'rating' column
 router.post('/', function (req, res, next) {
   knex('movies')
   .insert({
     title: req.body.title,
-    release_year: req.body.release_year}
+    release_year: req.body.release_year,
+    rating: req.body.rating}
   )
-  .returning(['id', 'title', 'release_year'])
+  .returning(['id', 'title', 'release_year', 'rating'])
   .then(function (movies) {
-    console.log(movies[0].title);
     res.json({
       statusCode: 200,
       results: movies
@@ -29,11 +50,9 @@ router.post('/', function (req, res, next) {
   });
 });
 
+
 router.patch('/:id', function (req, res, next) {
   var id = req.params.id;
-  console.log(req.body.title);
-  console.log("----------------");
-  console.log(req.params.id);
   knex("movies")
   .where("id", "=", id)
   .update({
@@ -42,7 +61,6 @@ router.patch('/:id', function (req, res, next) {
   })
   .returning(['id', 'title', 'release_year'])
   .then(function (movies) {
-    console.log(movies[0].title);
     res.json({
       statusCode: 200,
       results: movies
@@ -59,7 +77,6 @@ router.delete('/:id', function (req, res, next) {
   .del()
   .returning(['id', 'title', 'release_year'])
   .then(function (movies) {
-    // console.log(movies[0].title);
     res.json({
       statusCode: 200,
       results: movies
@@ -69,21 +86,5 @@ router.delete('/:id', function (req, res, next) {
   });
 });
 
-router.mkcol('/', function (req, res, next) {
-  console.log("in the mkcol");
-  knex.schema.table('movies', function (table) {
-    table.decimal("rating")
-    .returning(['id', 'title', 'release_year', 'rating'])
-    .then(function (movies) {
-      console.log(movies[0].title);
-      res.json({
-        statusCode: 200,
-        results: movies
-      });
-    }).catch(function(err) {
-      next(new Error(err));
-    });
-  });
-});
 
 module.exports = router;

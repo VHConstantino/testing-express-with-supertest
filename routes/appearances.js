@@ -1,15 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var knex = require('../db/knex');
+"use strict";
 
-// router.get('/', function(req, res, next) {
-//   knex('appearances').then(function (appearances) {
-//     console.log(appearances)
-//     res.json(appearances)
-//   }).catch(function (err) {
-//     next(new Error(err));
-//   })
-// });
+var express = require('express');
+var knex = require('../db/knex');
+var router = express.Router();
 
 router.get('/', function(req, res, next) {
   knex("movies")
@@ -22,10 +15,5 @@ router.get('/', function(req, res, next) {
     next(new Error(err));
   })
 });
-
-// knex("movies")
-// .select("movies.title", "movies.release_year", "actors.name", "actors.dob", "appearances.character")
-// .innerJoin("appearances", "movies.id", "appearances.movie_id")
-// .innerJoin("actors", "actors.id", "appearances.actor_id")
 
 module.exports = router;

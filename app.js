@@ -1,16 +1,17 @@
+'use strict';
+
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
 var index = require('./routes/index');
 var movies = require('./routes/movies');
 var actors = require('./routes/actors');
 var appearances = require('./routes/appearances');
 const PORT = 8080;
-
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function (req, res, next) {
   res.redirect('/api/v1');
 });
+
 app.use('/api/v1', index);
 app.use('/api/v1/movies', movies);
 app.use('/api/v1/actors', actors);
@@ -66,8 +68,8 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(PORT, function () {
-  console.log("Listening on port", PORT, "and for porject 'Supertest'");
-})
+  console.log(`Server is fully operational on ${PORT} for 'Testing with Supertest'`);
+});
 
 
 module.exports = app;

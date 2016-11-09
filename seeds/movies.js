@@ -1,3 +1,4 @@
+"use strict";
 
 exports.seed = function(knex, Promise) {
   return Promise.join(
@@ -11,7 +12,7 @@ exports.seed = function(knex, Promise) {
       knex('movies').insert({title: 'Bourne Identity', release_year: 2002, id: 2}).returning('id'),
       knex('movies').insert({title: 'Back to the Future', release_year: 1985, id: 3}).returning('id'),
       knex('movies').insert({title: 'Good Will Hunting', release_year: 1997, id: 4}).returning('id')
-    )
+    );
   }).then(function (movies) {
     return Promise.join(
       knex('actors').insert({name: 'Matt Damon', dob: '1970-10-08', id: 1}).returning('id'),
@@ -22,7 +23,7 @@ exports.seed = function(knex, Promise) {
       return {
         movies: {
           shawshankRedemption: movies[0][0],
-          bourneIndentity: movies[1][0],
+          bourneIdentity: movies[1][0],
           backToTheFuture: movies[2][0],
           goodWillHunting: movies[3][0],
         },
@@ -38,7 +39,7 @@ exports.seed = function(knex, Promise) {
     return Promise.join(
       knex('appearances').insert({
         actor_id: data.actors.matt,
-        movie_id: data.movies.bourneIndentity,
+        movie_id: data.movies.bourneIdentity,
         character: 'Jason Bourne',
         id: 1
       }),
@@ -60,6 +61,6 @@ exports.seed = function(knex, Promise) {
         character: 'Andy Dufresne',
         id: 4
       })
-    )
-  })
+    );
+  });
 };
